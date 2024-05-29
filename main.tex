@@ -1,0 +1,141 @@
+\documentclass{report}
+
+\usepackage{hyperref} % links
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{qcircuit}
+\usepackage{braket}
+\usepackage{float}
+\usepackage[toc,page]{appendix}
+
+\begin{document}
+
+\title{Exercises 8.23 and .. - Nielsen and Chuang}
+
+\author{Lorenzo La Corte}
+
+\maketitle
+
+\paragraph{8.23, Amplitude Damping of a Dual-Rail Qubit}
+
+Let
+\begin{equation}
+    \ket{\psi}=a\ket{01}+b\ket{10}
+\end{equation}
+
+Applying $\varepsilon_{A D} \otimes \varepsilon_{A D}$ to $\rho=\ket{\psi}\bra{\psi}$ produces a new state $\rho'$, according to the following operator sum representation:
+\begin{equation}
+    \varepsilon_{A D} \otimes \varepsilon_{A D}(\rho) = \sum_{i} E_{i}^{dr} \rho (E_{i}^{dr})^{\dagger} = \rho'
+\end{equation}
+
+Where the Kraus operators $E_{i}^{dr}$ are given by the tensor product of the Kraus operators $E_{j}$, which are the operation elements of the Amplitude Damping acting on a single qubit:
+\begin{equation}
+    E_{0} = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \quad E_{1} = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}
+\end{equation}
+
+The Kraus operators $E_{i}^{dr}$ the Amplitude Damping acting on two qubits are then given by:
+\begin{equation}
+    E_{00}^{dr} = E_{0} \otimes E_{0}, \quad , \quad E_{01}^{dr} = E_{0} \otimes E_{1}, \quad E_{10}^{dr} = E_{1} \otimes E_{0}, \quad E_{11}^{dr} = E_{1} \otimes E_{1}
+\end{equation}
+
+Thus, they are equal to:
+% todo: check correctness of the following equations
+\begin{multline}
+    E_{00}^{dr} = \ket{00}\bra{00} + \sqrt{1-\gamma}\ket{01}\bra{01} + \sqrt{1-\gamma}\ket{10}\bra{10} + (1-\gamma)\ket{11}\bra{11} = \\
+    = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & \sqrt{1-\gamma} & 0 & 0 \\ 0 & 0 & \sqrt{1-\gamma} & 0 \\ 0 & 0 & 0 & 1-\gamma \end{pmatrix}
+\end{multline}
+\begin{equation}
+    E_{01}^{dr} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{10}\bra{11}
+    = \begin{pmatrix} 0 & \sqrt{\gamma} & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sqrt{\gamma}\sqrt{1-\gamma} \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+\begin{equation}
+    E_{10}^{dr} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{01}\bra{11}  
+    = \begin{pmatrix} 0 & 0 & \sqrt{\gamma} & 0 \\ 0 & 0 & 0 & \sqrt{\gamma}\sqrt{1-\gamma} \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+\begin{equation}
+    E_{11}^{dr} = \gamma \ket{00}\bra{11}
+    = \begin{pmatrix} 0 & 0 & 0 & \gamma \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+
+If we restrict the operator to the span {$\ket{01}$, $\ket{10}$}, we get the operators:
+It can be easily checked that the quantum operation can be described with 3 operators:
+
+\begin{equation}
+    E_{0}^{dr} = \sqrt{1-\gamma} I
+\end{equation}
+\begin{equation}
+    E_{1}^{dr} = \sqrt{\gamma}|00\rangle\langle 01| = \sqrt{\gamma}\begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+\begin{equation}
+    E_{2}^{dr} = \sqrt{\gamma}|00\rangle\langle 10| = \sqrt{\gamma}\begin{pmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+
+The application of this operator to the state $\rho$ produces the state $\rho'$, which is given by:
+\begin{equation}
+    \rho' = \gamma\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix} + (1-\gamma)\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & |a|^{2} & a b^{*} & 0 \\ 0 & a^{*} b & |b|^{2} & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+\end{equation}
+
+So, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. This means that the state $\ket{00}$ can be used to detect amplitude damping errors with measurement operators:
+\begin{equation}
+    M_{0} = \ket{00}\bra{00} \quad \text{projector on} \operatorname{span}\{\ket{00}\}
+\end{equation}
+\begin{equation}
+    M_{1} = \ket{01}\bra{01} + \ket{10}\bra{10} + \ket{11}\bra{11} \quad \text{projector on} \operatorname{span}\{\ket{01}, \ket{10}, \ket{11}\}
+\end{equation}
+
+We can get the same result algebraically applying amplitude damping on the first qubit and second qubit, respectively using the third and fourth qubit for the environment, which both start from the state 0.
+
+Since the circuit of the amplitude damping is the following:
+% todo: complete
+
+So the one for the amplitude damping on dual-rail is:
+% todo: complete
+
+Algebraically, we start from a tensor product state:
+% omega_0 is the product state of psi and the 2 qubit of the environment
+
+And we apply:
+\begin{enumerate}
+    \item a controlled rotation on the Y axis (control on first qubit, target on the third qubit) 
+    \item a CNOT, with control on third qubit and target on the first
+\end{enumerate}
+
+The rotation on the Y axis of $\theta$ is defined as:
+
+It rotates one term of the two present in the starting system, as it is the only one with the first qubit set to 1, producing
+
+Then the CNOT flips only one of the 3 terms, producing
+
+This is $\omega_1$, which is the state of the system after having applied amplitude damping on the first qubit.
+To get $\omega_2$ we apply again:
+\begin{enumerate}
+    \item a controlled rotation on the Y axis (control on 2nd qubit, target on the 4th qubit) 
+    \item a CNOT, with control on 4th qubit and target on the 2nd
+\end{enumerate}
+
+Which is:
+
+Now, we have a state the we can call $\ket{\phi}$, and our target is to trace out the environment.
+To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$, which has 16 terms.
+% todo: explicitely write ket phi per bra phi   
+
+Then, we proceed to trace out of the environment.
+% todo: explicitely write trace of env of ket phi per bra phi   
+
+In order to simplify the calculations, we can do both the operations together, discarding the cross terms that don't have matching qubits for the environment:
+% todo: explicitely write the final 6 terms
+
+Which can be simplified to 
+% todo: explicitely write the final 5 terms
+
+If we set $\gamma=sin^2\frac{\theta}{2}$, we get the same result as ?: %todo: cite equation.
+
+So, we proved that the amplitude damping on 2 qubits is described by the operation elements ? % cite operation elements
+
+
+\paragraph{9. ,}
+
+
+\end{document}
+
