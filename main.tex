@@ -221,8 +221,40 @@ As a matter of fact, prove that:
 \end{equation}
 Where $\ket{\psi}$ is a pure state and $\sigma$ is a mixed state.
 
+We can start from the definition of fidelity between a pure and a mixed state
+% todo: add it
 
+Let $E_m$ set of POVM, such that
+\begin{equation}
+    p_m = Tr(\ket{\psi}\bra{\psi} E_m)
+    q_m = Tr(\sigma E_m)
+\end{equation}
+where $p_m$ and $q_m$ are the probability distributions of respectively $\ket{\psi}$ and $\sigma$.
 
+We can rewrite $p_m$ as
+% todo: add equation that brings to $\bra{\psi}Em\ket{psi}$
+
+And write the fidelity as
+\begin{equation}
+    F(\ket{\psi}, \rho) = \sum_{m} \sqrt{p_m q_m} 
+\end{equation}
+
+As a matter of fact:
+% todo: add the math to show the statement, using $\bra{psi}E_m\ket{psi} = 1 iff E_m = \ket{psi}\bra{psi}$
+
+Now, consider the trace distance between the probability distributions $p_m$ and $q_m$:
+% todo: add 
+
+This measure is upper bounded by the trace distance between the pure state $\ket{\psi}$ and the mixed state $\rho$:
+% todo: add 
+
+We can prove the following:
+\begin{equation}
+    1 - F(\ket{\psi}, \sigma)^2 = D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
+\end{equation}
+
+In particular, we can start from ? and use $\bra{psi}E_m\ket{psi} = 1 iff E_m = \ket{psi}\bra{psi}$
+% todo: add 
 
 \end{document}
 
