@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass{masterthesis}
 
 \usepackage{hyperref} % links
 \usepackage{graphicx}
@@ -11,89 +11,119 @@
 
 \begin{document}
 
-\title{Exercises 8.23 and .. - Nielsen and Chuang}
+\title{Exercises 8.23 and 9.21 - Nielsen and Chuang}
 
 \author{Lorenzo La Corte}
 
+\advisor{}
+
+\examiner{}
+
 \maketitle
 
-\paragraph{8.23, Amplitude Damping of a Dual-Rail Qubit}
+\section*{8.23, Amplitude Damping of a Dual-Rail Qubit}
 
-Let
+A dual-rail qubit is defined as
 \begin{equation}
     \ket{\psi}=a\ket{01}+b\ket{10}
 \end{equation}
 
 Applying $\varepsilon_{A D} \otimes \varepsilon_{A D}$ to $\rho=\ket{\psi}\bra{\psi}$ produces a new state $\rho'$, according to the following operator sum representation:
 \begin{equation}
-    \varepsilon_{A D} \otimes \varepsilon_{A D}(\rho) = \sum_{i} E_{i}^{dr} \rho (E_{i}^{dr})^{\dagger} = \rho'
+    \varepsilon_{A D} \otimes \varepsilon_{A D}(\rho) = \sum_{i} E_{i} \rho E_{i}^{\dagger} = \rho'
 \end{equation}
 
-Where the Kraus operators $E_{i}^{dr}$ are given by the tensor product of the Kraus operators $E_{j}$, which are the operation elements of the Amplitude Damping acting on a single qubit:
+Where the Kraus operators $E_{i}$ are given by the tensor product of the Kraus operators $E_{j}^{s}$, which are the operation elements of the Amplitude Damping acting on a single qubit:
 \begin{equation}
-    E_{0} = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \quad E_{1} = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}
+    E_{0}^{s} = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \quad E_{1}^{s} = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}
 \end{equation}
 
-The Kraus operators $E_{i}^{dr}$ the Amplitude Damping acting on two qubits are then given by:
+Thus, the Kraus operators $E_{i}$ the Amplitude Damping acting on two qubits are given by:
 \begin{equation}
-    E_{00}^{dr} = E_{0} \otimes E_{0}, \quad , \quad E_{01}^{dr} = E_{0} \otimes E_{1}, \quad E_{10}^{dr} = E_{1} \otimes E_{0}, \quad E_{11}^{dr} = E_{1} \otimes E_{1}
+    E_{00} = E_{0}^{s} \otimes E_{0}^{s}, \quad , \quad E_{01} = E_{0}^{s} \otimes E_{1}^{s}, \quad E_{10} = E_{1}^{s} \otimes E_{0}^{s}, \quad E_{11} = E_{1}^{s} \otimes E_{1}^{s}
 \end{equation}
 
-Thus, they are equal to:
-% todo: check correctness of the following equations
-\begin{multline}
-    E_{00}^{dr} = \ket{00}\bra{00} + \sqrt{1-\gamma}\ket{01}\bra{01} + \sqrt{1-\gamma}\ket{10}\bra{10} + (1-\gamma)\ket{11}\bra{11} = \\
+\begin{multline}\label{eq:op-el-1}
+    E_{00} = \ket{00}\bra{00} + \sqrt{1-\gamma}\ket{01}\bra{01} + \sqrt{1-\gamma}\ket{10}\bra{10} + (1-\gamma)\ket{11}\bra{11} = \\
     = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & \sqrt{1-\gamma} & 0 & 0 \\ 0 & 0 & \sqrt{1-\gamma} & 0 \\ 0 & 0 & 0 & 1-\gamma \end{pmatrix}
 \end{multline}
-\begin{equation}
-    E_{01}^{dr} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{10}\bra{11}
+\begin{equation}\label{eq:op-el-2}
+    E_{01} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{10}\bra{11}
     = \begin{pmatrix} 0 & \sqrt{\gamma} & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & \sqrt{\gamma}\sqrt{1-\gamma} \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
-\begin{equation}
-    E_{10}^{dr} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{01}\bra{11}  
+\begin{equation}\label{eq:op-el-3}
+    E_{10} = \sqrt{\gamma}\ket{00}\bra{01} + \sqrt{\gamma}\sqrt{1-\gamma}\ket{01}\bra{11}  
     = \begin{pmatrix} 0 & 0 & \sqrt{\gamma} & 0 \\ 0 & 0 & 0 & \sqrt{\gamma}\sqrt{1-\gamma} \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
-\begin{equation}
-    E_{11}^{dr} = \gamma \ket{00}\bra{11}
+\begin{equation}\label{eq:op-el-4}
+    E_{11} = \gamma \ket{00}\bra{11}
     = \begin{pmatrix} 0 & 0 & 0 & \gamma \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
 
-If we restrict the operator to the span {$\ket{01}$, $\ket{10}$}, we get the operators:
-It can be easily checked that the quantum operation can be described with 3 operators:
+% If we restrict the operator to the span {$\ket{01}$, $\ket{10}$}, we get the operators:
+% \begin{equation}
+%     E_{0}^{s} = \sqrt{1-\gamma} I
+% \end{equation}
+% \begin{equation}
+%     E_{1}^{s} = \sqrt{\gamma}|00\rangle\langle 01| = \sqrt{\gamma}\begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+% \end{equation}
+% \begin{equation}
+%     E_{2} = \sqrt{\gamma}|00\rangle\langle 10| = \sqrt{\gamma}\begin{pmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+% \end{equation}
 
+We have that
 \begin{equation}
-    E_{0}^{dr} = \sqrt{1-\gamma} I
+    E_{00} \rho E_{00}^{\dagger} = (1-\gamma) \rho
 \end{equation}
 \begin{equation}
-    E_{1}^{dr} = \sqrt{\gamma}|00\rangle\langle 01| = \sqrt{\gamma}\begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+    E_{01} \rho E_{01}^{\dagger} = |a|^2 \gamma \ket{00}\bra{00}
 \end{equation}
 \begin{equation}
-    E_{2}^{dr} = \sqrt{\gamma}|00\rangle\langle 10| = \sqrt{\gamma}\begin{pmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+    E_{10} \rho E_{10}^{\dagger} = |b|^2 \gamma \ket{00}\bra{00}
+\end{equation}
+\begin{equation}
+    E_{11} \rho E_{11}^{\dagger} = 0
 \end{equation}
 
-The application of this operator to the state $\rho$ produces the state $\rho'$, which is given by:
-\begin{equation}
+And so, the application of these operators to the state $\rho$ produces the state $\rho'$, which is given by:
+\begin{equation}\label{eq:ad-dual-rail}
     \rho' = \gamma\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix} + (1-\gamma)\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & |a|^{2} & a b^{*} & 0 \\ 0 & a^{*} b & |b|^{2} & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
 
-So, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. This means that the state $\ket{00}$ can be used to detect amplitude damping errors with measurement operators:
-\begin{equation}
-    M_{0} = \ket{00}\bra{00} \quad \text{projector on} \operatorname{span}\{\ket{00}\}
-\end{equation}
-\begin{equation}
-    M_{1} = \ket{01}\bra{01} + \ket{10}\bra{10} + \ket{11}\bra{11} \quad \text{projector on} \operatorname{span}\{\ket{01}, \ket{10}, \ket{11}\}
-\end{equation}
+So, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. 
+
+% This means that the state $\ket{00}$ can be used to detect amplitude damping errors with measurement operators:
+% \begin{equation}
+%     M_{0} = \ket{00}\bra{00} \quad \text{projector on} \operatorname{span}\{\ket{00}\}
+% \end{equation}
+% \begin{equation}
+%     M_{1} = \ket{01}\bra{01} + \ket{10}\bra{10} + \ket{11}\bra{11} \quad \text{projector on} \operatorname{span}\{\ket{01}, \ket{10}, \ket{11}\}
+% \end{equation}
 
 We can get the same result algebraically applying amplitude damping on the first qubit and second qubit, respectively using the third and fourth qubit for the environment, which both start from the state 0.
 
 Since the circuit of the amplitude damping is the following:
-% todo: complete
+\begin{align}
+    \Qcircuit @C=1em @R=1.2em {
+        \lstick{\rho} & \qw & \ctrl{1} & \targ & \rstick{\rho'} \qw \\
+        \lstick{\ket{0}} & \qw & \gate{R_y(\theta)} & \ctrl{-1} & \meter \qw
+      }          
+\end{align}
 
 So the one for the amplitude damping on dual-rail is:
-% todo: complete
+\begin{align}
+    \Qcircuit @C=1em @R=1.2em {
+        & \qw & \ctrl{2} & \targ & \qw & \qw & \qw \\
+        & \qw & \qw & \qw & \ctrl{2} & \targ & \qw \\
+        \lstick{\ket{0}} & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \qw & \qw & \meter \qw \\
+        \lstick{\ket{0}} & \qw & \qw & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \meter \qw
+      }          
+\end{align}
 
 Algebraically, we start from a tensor product state:
-% omega_0 is the product state of psi and the 2 qubit of the environment
+\begin{equation}
+    \omega_0 = \ket{\psi}\ket{00} = a\ket{01}\ket{00} + b\ket{10}\ket{00} = a\ket{0100} + b\ket{1000}
+\end{equation}
 
 And we apply:
 \begin{enumerate}
@@ -101,13 +131,33 @@ And we apply:
     \item a CNOT, with control on third qubit and target on the first
 \end{enumerate}
 
+So that
+\begin{equation}
+    \omega_1 = CX_{3,1} CR_{y}(\theta)_{1,3} \omega_0
+\end{equation}
+
 The rotation on the Y axis of $\theta$ is defined as:
+\begin{equation}
+    R_y(\theta) = \begin{pmatrix} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}
+\end{equation}
+
+And acts on $\ket{0}$ as following:
+\begin{equation}
+    R_y(\theta)\ket{0} = \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1}
+\end{equation}
 
 It rotates one term of the two present in the starting system, as it is the only one with the first qubit set to 1, producing
+\begin{equation}
+    \omega_1 = CX_{3,1} (a\ket{0100} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{1010})
+\end{equation}
 
-Then the CNOT flips only one of the 3 terms, producing
+Then the CNOT flips only the third term, producing
+\begin{equation}
+    \omega_1 = a\ket{0100} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
+\end{equation}
 
-This is $\omega_1$, which is the state of the system after having applied amplitude damping on the first qubit.
+This is the state of the system after having applied amplitude damping on the first qubit.
+
 To get $\omega_2$ we apply again:
 \begin{enumerate}
     \item a controlled rotation on the Y axis (control on 2nd qubit, target on the 4th qubit) 
@@ -115,26 +165,63 @@ To get $\omega_2$ we apply again:
 \end{enumerate}
 
 Which is:
+\begin{equation}
+    \omega_2 = CX_{4,2} CR_{y}(\theta)_{2,4} \omega_1
+\end{equation}
+\begin{equation}
+    \omega_2 = CX_{4,2} (a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0101} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010})
+\end{equation}
+\begin{equation}
+    \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
+\end{equation}
 
 Now, we have a state the we can call $\ket{\phi}$, and our target is to trace out the environment.
-To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$, which has 16 terms.
-% todo: explicitely write ket phi per bra phi   
+\begin{equation}
+    \ket{\phi} = \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
+\end{equation}
 
-Then, we proceed to trace out of the environment.
-% todo: explicitely write trace of env of ket phi per bra phi   
+To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$, which has 16 terms, deriving from the tensor product of the 4 terms of $\ket{\phi}$ with their conjugates:
+\begin{align}
+    \ket{\phi}\bra{\phi} &= (a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}) \nonumber \\
+    &(a^{*}\cos\frac{\theta}{2}\bra{0100} + a^{*}\sin\frac{\theta}{2}\bra{0001} + b^{*}\cos\frac{\theta}{2}\bra{1000} + b^{*}\sin\frac{\theta}{2}\bra{0010})
+\end{align}
 
-In order to simplify the calculations, we can do both the operations together, discarding the cross terms that don't have matching qubits for the environment:
-% todo: explicitely write the final 6 terms
+We can simplify calculations by taking the trace of the environment while multiplying the terms: doing that, we can discard the terms that don't have matching qubits for the environment, as they will be zero when taking the trace.
+
+In particular, we have 4 terms coming from the multiplications of the terms by themselves (where obviously the environment bits are matching), plus 2 more coming from the multiplication of the first and the third terms of $\phi$, which have the same bits from the environment.
+
+So, as a result:
+\begin{align}
+    Tr_e(\ket{\phi}\bra{\phi}) &= |a|^2 \cos^2 \frac{\theta}{2}\ket{01}\bra{01} + |a|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + |b|^2 \cos^2 \frac{\theta}{2}\ket{10}\bra{10} \\
+    & + |b|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + a b^{*} \cos^2 \frac{\theta}{2} \ket{01}\bra{10} + a^{*} b \cos^2 \frac{\theta}{2} \ket{10}\bra{01} 
+\end{align}
 
 Which can be simplified to 
-% todo: explicitely write the final 5 terms
+\begin{align}
+    Tr_e(\ket{\phi}\bra{\phi}) &= \sin^2 \frac{\theta}{2}\ket{00}\bra{00} \\ 
+    & + |a|^2 \cos^2 \frac{\theta}{2}\ket{01}\bra{01} + a b^{*} \cos^2 \frac{\theta}{2} \ket{01}\bra{10} \\
+    & + a^{*} b \cos^2 \frac{\theta}{2} \ket{10}\bra{01} + |b|^2 \cos^2 \frac{\theta}{2}\ket{10}\bra{10}
+\end{align}
 
-If we set $\gamma=sin^2\frac{\theta}{2}$, we get the same result as ?: %todo: cite equation.
+If we set $\gamma=sin^2\frac{\theta}{2}$, we get the same result as \hyperref[eq:ad-dual-rail]{eq.13}.
 
-So, we proved that the amplitude damping on 2 qubits is described by the operation elements ? % cite operation elements
+So, we proved that the amplitude damping on 2 qubits is described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}.
+
+\newpage
+\section*{9.21, Relationship between Fidelity and Trace Distance}
+
+When comparing pure states and mixed states it is possible to make a stronger statement with respect to the bound between fidelity and trace distance of two mixed states:
+\begin{equation}
+    1 - F(\rho, \sigma) \leq D(\rho, \sigma)
+\end{equation}
+
+As a matter of fact, prove that:
+\begin{equation}
+    1 - F(\ket{\psi}, \sigma)^2 \leq D(\ket{\psi}, \sigma)
+\end{equation}
+Where $\ket{\psi}$ is a pure state and $\sigma$ is a mixed state.
 
 
-\paragraph{9. ,}
 
 
 \end{document}
