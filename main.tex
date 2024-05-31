@@ -30,7 +30,7 @@ A dual-rail qubit is defined as
 
 Applying $\varepsilon_{A D} \otimes \varepsilon_{A D}$ to $\rho=\ket{\psi}\bra{\psi}$ produces a new state $\rho'$, according to the following operator sum representation:
 \begin{equation}
-    \varepsilon_{A D} \otimes \varepsilon_{A D}(\rho) = \sum_{i} E_{i} \rho E_{i}^{\dagger} = \rho'
+    (\varepsilon_{A D} \otimes \varepsilon_{A D})(\rho) = \sum_{i} E_{i} \rho E_{i}^{\dagger} = \rho'
 \end{equation}
 
 Where the Kraus operators $E_{i}$ are given by the tensor product of the Kraus operators $E_{j}^{s}$, which are the operation elements of the Amplitude Damping acting on a single qubit:
@@ -87,10 +87,10 @@ We have that
 
 And so, the application of these operators to the state $\rho$ produces the state $\rho'$, which is given by:
 \begin{equation}\label{eq:ad-dual-rail}
-    \rho' = \gamma\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix} + (1-\gamma)\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & |a|^{2} & a b^{*} & 0 \\ 0 & a^{*} b & |b|^{2} & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
+    \rho' = (1-\gamma)\begin{pmatrix} 0 & 0 & 0 & 0 \\ 0 & |a|^{2} & a b^{*} & 0 \\ 0 & a^{*} b & |b|^{2} & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix} + \gamma\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
 
-So, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. 
+Thus, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. 
 
 % This means that the state $\ket{00}$ can be used to detect amplitude damping errors with measurement operators:
 % \begin{equation}
@@ -100,9 +100,10 @@ So, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal 
 %     M_{1} = \ket{01}\bra{01} + \ket{10}\bra{10} + \ket{11}\bra{11} \quad \text{projector on} \operatorname{span}\{\ket{01}, \ket{10}, \ket{11}\}
 % \end{equation}
 
-We can get the same result algebraically applying amplitude damping on the first qubit and second qubit, respectively using the third and fourth qubit for the environment, which both start from the state 0.
+\paragraph*{Proof}
+We can get the same result considering the effect of amplitude damping on the first qubit and second qubit separetely, respectively associated to the third and fourth qubit for the environment, which both start from the state 0.
 
-Since the circuit of the amplitude damping is the following:
+Since the circuit of the amplitude damping on a single qubit is the following:
 \begin{align}
     \Qcircuit @C=1em @R=1.2em {
         \lstick{\rho} & \qw & \ctrl{1} & \targ & \rstick{\rho'} \qw \\
@@ -110,7 +111,7 @@ Since the circuit of the amplitude damping is the following:
       }          
 \end{align}
 
-So the one for the amplitude damping on dual-rail is:
+So the one for the amplitude damping on a dual-rail qubit is:
 \begin{align}
     \Qcircuit @C=1em @R=1.2em {
         & \qw & \ctrl{2} & \targ & \qw & \qw & \qw \\
@@ -122,18 +123,17 @@ So the one for the amplitude damping on dual-rail is:
 
 Algebraically, we start from a tensor product state:
 \begin{equation}
-    \omega_0 = \ket{\psi}\ket{00} = a\ket{01}\ket{00} + b\ket{10}\ket{00} = a\ket{0100} + b\ket{1000}
+    \omega_0 = \ket{\psi}\ket{00} = a\ket{0100} + b\ket{1000}
 \end{equation}
 
-And we apply:
+Applying, in sequence:
 \begin{enumerate}
-    \item a controlled rotation on the Y axis (control on first qubit, target on the third qubit) 
-    \item a CNOT, with control on third qubit and target on the first
+    \item a controlled rotation on the Y axis: $CR_{y}(\theta)_{1,3}$,
+    \item a controlled not $CX_{3,1}$
 \end{enumerate}
 
-So that
 \begin{equation}
-    \omega_1 = CX_{3,1} CR_{y}(\theta)_{1,3} \omega_0
+    \omega_1 = CX_{3,1} CR_{y}(\theta)_{1,3} (\omega_0)
 \end{equation}
 
 The rotation on the Y axis of $\theta$ is defined as:
@@ -146,7 +146,7 @@ And acts on $\ket{0}$ as following:
     R_y(\theta)\ket{0} = \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1}
 \end{equation}
 
-It rotates one term of the two present in the starting system, as it is the only one with the first qubit set to 1, producing
+Only the second term of $\omega_0$ is rotated, as it is the only one with the first qubit set to 1, producing
 \begin{equation}
     \omega_1 = CX_{3,1} (a\ket{0100} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{1010})
 \end{equation}
@@ -158,15 +158,10 @@ Then the CNOT flips only the third term, producing
 
 This is the state of the system after having applied amplitude damping on the first qubit.
 
-To get $\omega_2$ we apply again:
-\begin{enumerate}
-    \item a controlled rotation on the Y axis (control on 2nd qubit, target on the 4th qubit) 
-    \item a CNOT, with control on 4th qubit and target on the 2nd
-\end{enumerate}
+Then, the effect of the amplitude damping on the second qubit corresponds to the application, in sequence, of another pair of gates (controlled rotation and controlled not), on the second and fourth qubit:
 
-Which is:
 \begin{equation}
-    \omega_2 = CX_{4,2} CR_{y}(\theta)_{2,4} \omega_1
+    \omega_2 = CX_{4,2} CR_{y}(\theta)_{2,4} (\omega_1)
 \end{equation}
 \begin{equation}
     \omega_2 = CX_{4,2} (a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0101} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010})
@@ -175,10 +170,11 @@ Which is:
     \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
 \end{equation}
 
-Now, we have a state the we can call $\ket{\phi}$, and our target is to trace out the environment.
+Let
 \begin{equation}
     \ket{\phi} = \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
 \end{equation}
+our target is to trace out the environment from this state.
 
 To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$, which has 16 terms, deriving from the tensor product of the 4 terms of $\ket{\phi}$ with their conjugates:
 \begin{align}
@@ -186,11 +182,10 @@ To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$,
     &(a^{*}\cos\frac{\theta}{2}\bra{0100} + a^{*}\sin\frac{\theta}{2}\bra{0001} + b^{*}\cos\frac{\theta}{2}\bra{1000} + b^{*}\sin\frac{\theta}{2}\bra{0010})
 \end{align}
 
-We can simplify calculations by taking the trace of the environment while multiplying the terms: doing that, we can discard the terms that don't have matching qubits for the environment, as they will be zero when taking the trace.
+We can simplify calculations by taking the trace of the environment while multiplying the terms: we discard the terms that do not have matching qubits for the environment.
 
-In particular, we have 4 terms coming from the multiplications of the terms by themselves (where obviously the environment bits are matching), plus 2 more coming from the multiplication of the first and the third terms of $\phi$, which have the same bits from the environment.
+In particular, we have 4 terms coming from the multiplications of the terms by themselves (where obviously the environment bits are matching), plus 2 more coming from the multiplication of the first and the third terms of $\ket{\phi}$:
 
-So, as a result:
 \begin{align}
     Tr_e(\ket{\phi}\bra{\phi}) &= |a|^2 \cos^2 \frac{\theta}{2}\ket{01}\bra{01} + |a|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + |b|^2 \cos^2 \frac{\theta}{2}\ket{10}\bra{10} \\
     & + |b|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + a b^{*} \cos^2 \frac{\theta}{2} \ket{01}\bra{10} + a^{*} b \cos^2 \frac{\theta}{2} \ket{10}\bra{01} 
@@ -203,58 +198,88 @@ Which can be simplified to
     & + a^{*} b \cos^2 \frac{\theta}{2} \ket{10}\bra{01} + |b|^2 \cos^2 \frac{\theta}{2}\ket{10}\bra{10}
 \end{align}
 
-If we set $\gamma=sin^2\frac{\theta}{2}$, we get the same result as \hyperref[eq:ad-dual-rail]{eq.13}.
-
-So, we proved that the amplitude damping on 2 qubits is described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}.
+Let $\gamma=sin^2\frac{\theta}{2}$
+\begin{align}
+    Tr_e(\ket{\phi}\bra{\phi}) &= \gamma\ket{00}\bra{00} \\ 
+    & + (1-\gamma) |a|^2 \ket{01}\bra{01} + (1-\gamma) a b^{*} \ket{01}\bra{10} \\
+    & + (1-\gamma) a^{*} b \ket{10}\bra{01} + (1-\gamma) |b|^2 \ket{10}\bra{10} \\
+    &= \rho'
+\end{align}
+thus, we got the same result as \hyperref[eq:ad-dual-rail]{Eq.13}, proving that the amplitude damping on 2 qubits is described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}.
 
 \newpage
 \section*{9.21, Relationship between Fidelity and Trace Distance}
 
-When comparing pure states and mixed states it is possible to make a stronger statement with respect to the bound between fidelity and trace distance of two mixed states:
+The relationship between fidelity and trace distance of two mixed states is defined as
 \begin{equation}
     1 - F(\rho, \sigma) \leq D(\rho, \sigma)
 \end{equation}
 
-As a matter of fact, prove that:
+\paragraph*{Theorem}
+When comparing pure states and mixed states it is possible to make a stronger statement
 \begin{equation}
     1 - F(\ket{\psi}, \sigma)^2 \leq D(\ket{\psi}, \sigma)
 \end{equation}
-Where $\ket{\psi}$ is a pure state and $\sigma$ is a mixed state.
+where $\ket{\psi}$ is a pure state and $\sigma$ is a mixed state.
 
-We can start from the definition of fidelity between a pure and a mixed state
-% todo: add it
+\paragraph*{Proof}
+Consider the definition of fidelity between a pure and a mixed state
+\begin{equation}
+    F(\ket{\psi}, \sigma) = \sqrt{\bra{\psi}\sigma\ket{\psi}}
+\end{equation}
 
 Let $E_m$ set of POVM, such that
 \begin{equation}
-    p_m = Tr(\ket{\psi}\bra{\psi} E_m)
-    q_m = Tr(\sigma E_m)
+    p_m = Tr(\ket{\psi}\bra{\psi} E_m) \quad \quad q_m = Tr(\sigma E_m)
 \end{equation}
 where $p_m$ and $q_m$ are the probability distributions of respectively $\ket{\psi}$ and $\sigma$.
 
 We can rewrite $p_m$ as
-% todo: add equation that brings to $\bra{\psi}Em\ket{psi}$
+\begin{equation}
+    p_m = Tr(\ket{\psi}\bra{\psi} E_m) = \sum_{i} \bra{i} \ket{\psi}\bra{\psi} E_m \ket{i} = \bra{\psi}E_m\ket{\psi}
+\end{equation}
 
 And write the fidelity as
 \begin{equation}
     F(\ket{\psi}, \rho) = \sum_{m} \sqrt{p_m q_m} 
 \end{equation}
 
-As a matter of fact:
-% todo: add the math to show the statement, using $\bra{psi}E_m\ket{psi} = 1 iff E_m = \ket{psi}\bra{psi}$
+We can prove this statement by noticing that $\bra{\psi}E_m\ket{\psi} = 1$ if and only if $E_m = \ket{\psi}\bra{\psi}$, thus:
+\begin{align}
+    \sum_{m} \sqrt{p_m q_m} = \sum_{m} \sqrt{\bra{\psi}E_m\ket{\psi} Tr(\sigma E_m)} = \\
+    = \sqrt{\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} Tr(\sigma \ket{\psi}\bra{\psi})} = \\
+    = \sqrt{\sum_{i} \bra{i} \sigma \ket{\psi}\bra{\psi} \ket{i}} = \sqrt{\bra{\psi} \sigma \ket{\psi}} = F(\ket{\psi}, \sigma)
+\end{align}
 
 Now, consider the trace distance between the probability distributions $p_m$ and $q_m$:
-% todo: add 
+\begin{equation}\label{eq:trace-dist}
+    D(p_m, q_m) = \frac{1}{2} \sum_{m} |p_m - q_m|
+\end{equation}
 
 This measure is upper bounded by the trace distance between the pure state $\ket{\psi}$ and the mixed state $\rho$:
-% todo: add 
+\begin{equation}
+    D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
+\end{equation}
+
 
 We can prove the following:
 \begin{equation}
     1 - F(\ket{\psi}, \sigma)^2 = D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
 \end{equation}
 
-In particular, we can start from ? and use $\bra{psi}E_m\ket{psi} = 1 iff E_m = \ket{psi}\bra{psi}$
-% todo: add 
+In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyperref[eq:trace-dist]{eq:45}
+\begin{align}
+    D(p_m, q_m) &= \frac{1}{2} \sum_{m} |p_m - q_m| = \frac{1}{2} \sum_{m} |\bra{\psi}E_m\ket{\psi} - Tr(\sigma E_m)| = \\
+    &= \frac{1}{2} |\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - Tr(\sigma \ket{\psi}\bra{\psi})| = \\
+    &= \frac{1}{2} |1 - \bra{\psi} \sigma \ket{\psi}| = \\ 
+    &= \frac{1}{2} |1 - F(\ket{\psi}, \sigma)^2| = \\
+    &= \frac{1 - F(\ket{\psi}, \sigma)^2}{2}
+\end{align}
+
+Thus (nope, still not there yet):
+\begin{equation}
+    1 - F(\ket{\psi}, \sigma)^2 = D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
+\end{equation}
 
 \end{document}
 
