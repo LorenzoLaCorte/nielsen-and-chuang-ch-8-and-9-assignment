@@ -269,14 +269,33 @@ We can prove the following:
 
 In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyperref[eq:trace-dist]{eq:45}
 \begin{align}
-    D(p_m, q_m) &= \frac{1}{2} \sum_{m} |p_m - q_m| = \frac{1}{2} \sum_{m} |\bra{\psi}E_m\ket{\psi} - Tr(\sigma E_m)| = \\
-    &= \frac{1}{2} |\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - Tr(\sigma \ket{\psi}\bra{\psi})| = \\
-    &= \frac{1}{2} |1 - \bra{\psi} \sigma \ket{\psi}| = \\ 
-    &= \frac{1}{2} |1 - F(\ket{\psi}, \sigma)^2| = \\
-    &= \frac{1 - F(\ket{\psi}, \sigma)^2}{2}
+    D(p_m, q_m) &= \frac{1}{2} \sum_{m} |p_m - q_m| = \\
+    &= \frac{1}{2} \sum_{m=0}^{r} |\bra{\psi}E_m\ket{\psi} - Tr(\sigma E_m)|
 \end{align}
 
-Thus (nope, still not there yet):
+We have one term where $E_m = \ket{\psi}\bra{\psi}$ and $\bra{\psi}E_m\ket{\psi} = 1$, whereas we don't know the other terms.
+\begin{align}
+    D(p_m, q_m) &= \frac{1}{2} \left(|\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - \bra{\psi} \sigma \ket{\psi} | + \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
+    &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + | \sum_{m=1}^{r} E_m Tr(\sigma)|\right)
+\end{align}
+
+Where 
+\begin{equation}
+    \sum_{m=0}^{r} Tr(\sigma E_m) = \bra{\psi} \sigma \ket{\psi} + \sum_{m=1}^{r} Tr(\sigma E_m) = 1
+\end{equation}
+
+Thus
+\begin{equation}
+    \sum_{m=1}^{r} Tr(\sigma E_m) = 1 - \bra{\psi} \sigma \ket{\psi} = 1 - F(\ket{\psi}, \sigma)^2
+\end{equation}
+
+So
+\begin{align}
+    D(p_m, q_m) &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + |1 - F(\ket{\psi}, \sigma)^2 |\right) = \\
+    &= 1 - F(\ket{\psi}, \sigma)^2 
+\end{align}
+
+Which proves the theorem:
 \begin{equation}
     1 - F(\ket{\psi}, \sigma)^2 = D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
 \end{equation}
