@@ -114,34 +114,34 @@ Since the circuit of the amplitude damping on a single qubit is the following:
 So the one for the amplitude damping on a dual-rail qubit is:
 \begin{align}
     \Qcircuit @C=1em @R=1.2em {
-        & \qw & \ctrl{2} & \targ & \qw & \qw & \qw \\
-        & \qw & \qw & \qw & \ctrl{2} & \targ & \qw \\
+        \lstick{\rho_0} & \qw & \ctrl{2} & \targ & \qw & \qw & \rstick{\rho_0'} \qw  \\
+        \lstick{\rho_1} & \qw & \qw & \qw & \ctrl{2} & \targ & \rstick{\rho_1'} \qw  \\
         \lstick{\ket{0}} & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \qw & \qw & \meter \qw \\
         \lstick{\ket{0}} & \qw & \qw & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \meter \qw
       }          
 \end{align}
 
-Algebraically, we start from a tensor product state:
+Let $\omega_0$ be the starting state of the system, $\omega_1$ the state after the amplitude damping on the first qubit, and $\omega_2$ the state after the amplitude damping on the second qubit.
+
 \begin{equation}
     \omega_0 = \ket{\psi}\ket{00} = a\ket{0100} + b\ket{1000}
 \end{equation}
 
-Applying, in sequence:
+$\omega_1$ is obtained applying, in sequence:
 \begin{enumerate}
     \item a controlled rotation on the Y axis: $CR_{y}(\theta)_{1,3}$,
     \item a controlled not $CX_{3,1}$
 \end{enumerate}
-
+onto the state $\omega_0$
 \begin{equation}
     \omega_1 = CX_{3,1} CR_{y}(\theta)_{1,3} (\omega_0)
 \end{equation}
 
-The rotation on the Y axis of $\theta$ is defined as:
+Where the rotation on the Y axis of $\theta$ is defined as:
 \begin{equation}
     R_y(\theta) = \begin{pmatrix} \cos\frac{\theta}{2} & -\sin\frac{\theta}{2} \\ \sin\frac{\theta}{2} & \cos\frac{\theta}{2} \end{pmatrix}
 \end{equation}
-
-And acts on $\ket{0}$ as following:
+acting on $\ket{0}$ as following:
 \begin{equation}
     R_y(\theta)\ket{0} = \cos\frac{\theta}{2}\ket{0} + \sin\frac{\theta}{2}\ket{1}
 \end{equation}
@@ -158,8 +158,7 @@ Then the CNOT flips only the third term, producing
 
 This is the state of the system after having applied amplitude damping on the first qubit.
 
-Then, the effect of the amplitude damping on the second qubit corresponds to the application, in sequence, of another pair of gates (controlled rotation and controlled not), on the second and fourth qubit:
-
+$\omega_2$ is obtained applying, in sequence, another pair of gates (controlled rotation and controlled not), on the second and fourth qubit:
 \begin{equation}
     \omega_2 = CX_{4,2} CR_{y}(\theta)_{2,4} (\omega_1)
 \end{equation}
@@ -170,11 +169,12 @@ Then, the effect of the amplitude damping on the second qubit corresponds to the
     \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
 \end{equation}
 
-Let
+Now, let
 \begin{equation}
     \ket{\phi} = \omega_2 = a\cos\frac{\theta}{2}\ket{0100} + a\sin\frac{\theta}{2}\ket{0001} + b\cos\frac{\theta}{2}\ket{1000} + b\sin\frac{\theta}{2}\ket{0010}
 \end{equation}
-our target is to trace out the environment from this state.
+
+Our target is to trace out the environment from this state.
 
 To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$, which has 16 terms, deriving from the tensor product of the 4 terms of $\ket{\phi}$ with their conjugates:
 \begin{align}
@@ -244,7 +244,7 @@ And write the fidelity as
     F(\ket{\psi}, \rho) = \sum_{m} \sqrt{p_m q_m} 
 \end{equation}
 
-We can prove this statement by noticing that $\bra{\psi}E_m\ket{\psi} = 1$ if and only if $E_m = \ket{\psi}\bra{\psi}$, thus:
+We can prove this statement by noticing that $\bra{\psi}E_m\ket{\psi} = 1$ if and only if $E_m = \ket{\psi}\bra{\psi}$, while it is 0 in the other cases; thus:
 \begin{align}
     \sum_{m} \sqrt{p_m q_m} = \sum_{m} \sqrt{\bra{\psi}E_m\ket{\psi} Tr(\sigma E_m)} = \\
     = \sqrt{\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} Tr(\sigma \ket{\psi}\bra{\psi})} = \\
@@ -272,10 +272,12 @@ In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyp
     D(p_m, q_m) &= \frac{1}{2} \sum_{m} |p_m - q_m| = \\
     &= \frac{1}{2} \sum_{m=0}^{r} |\bra{\psi}E_m\ket{\psi} - Tr(\sigma E_m)|
 \end{align}
+where r is the number of elements in the POVM set.
 
-We have one term where $E_m = \ket{\psi}\bra{\psi}$ and $\bra{\psi}E_m\ket{\psi} = 1$, whereas we don't know the other terms.
+We have one term where $E_m = \ket{\psi}\bra{\psi}$ and $\bra{\psi}E_m\ket{\psi} = 1$.
+For the other terms, $p_m$ is nullified but $q_m$ is still present, so we can rewrite the trace distance as
 \begin{align}
-    D(p_m, q_m) &= \frac{1}{2} \left(|\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - \bra{\psi} \sigma \ket{\psi} | + \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
+    D(p_m, q_m) &= \frac{1}{2} \left(|\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - \bra{\psi} \sigma \ket{\psi} | + | \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
     &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + | \sum_{m=1}^{r} E_m Tr(\sigma)|\right)
 \end{align}
 
