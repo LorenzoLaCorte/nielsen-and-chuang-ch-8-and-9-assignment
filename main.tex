@@ -81,7 +81,7 @@ And so, the application of these operators to the state $\rho$ produces the stat
 
 Thus, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. 
 
-Notice that the set of operation elements $\{E_{00}, E_{01}, E_{10}, E_{11}\}$, has the same effect of the operator set
+Notice that the set of operation elements $\{E_{00}, E_{01}, E_{10}, E_{11}\}$, has the same effect of the operators set
 \begin{equation}
     E_{0} = \sqrt{1-\gamma}(\ket{01}\bra{01} + \ket{10}\bra{10}) \quad E_{1} = \sqrt{\gamma}|00\rangle\langle 01| \quad E_{2} = \sqrt{\gamma}|00\rangle\langle 10|
 \end{equation}
@@ -196,7 +196,7 @@ Let $\gamma=sin^2\frac{\theta}{2}$
     & + (1-\gamma) a^{*} b \ket{10}\bra{01} + (1-\gamma) |b|^2 \ket{10}\bra{10} \\
     &= \rho'
 \end{align}
-thus, we got the same result as \hyperref[eq:ad-dual-rail]{Eq.13}, proving that the amplitude damping on 2 qubits is described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}.
+thus, we got the same result as \hyperref[eq:ad-dual-rail]{eq:13}, proving that the amplitude damping on 2 qubits is described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}.
 
 \newpage
 \section*{9.21, Relationship between Fidelity and Trace Distance}
@@ -207,7 +207,7 @@ The relationship between fidelity and trace distance of two mixed states is defi
 \end{equation}
 
 \paragraph*{Theorem}
-When comparing pure states and mixed states it is possible to make a stronger statement
+When comparing pure states and mixed states it is possible to make a stronger statement:
 \begin{equation}
     1 - F(\ket{\psi}, \sigma)^2 \leq D(\ket{\psi}, \sigma)
 \end{equation}
@@ -266,7 +266,7 @@ We can prove the following:
     1 - F(\ket{\psi}, \sigma)^2 = D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
 \end{equation}
 
-In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyperref[eq:trace-dist]{eq:45}
+In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyperref[eq:trace-dist]{(eq:47)}
 \begin{align}
     D(p_m, q_m) &= \frac{1}{2} \sum_{m} |p_m - q_m| = \\
     &= \frac{1}{2} \sum_{m=0}^{r} |\bra{\psi}E_m\ket{\psi} - Tr(\sigma E_m)|
