@@ -40,7 +40,7 @@ Where the Kraus operators $E_{i}$ are given by the tensor product of the Kraus o
 
 Thus, the Kraus operators $E_{i}$ the Amplitude Damping acting on two qubits are given by:
 \begin{equation}
-    E_{00} = E_{0}^{s} \otimes E_{0}^{s}, \quad , \quad E_{01} = E_{0}^{s} \otimes E_{1}^{s}, \quad E_{10} = E_{1}^{s} \otimes E_{0}^{s}, \quad E_{11} = E_{1}^{s} \otimes E_{1}^{s}
+    E_{00} = E_{0}^{s} \otimes E_{0}^{s}, \quad E_{01} = E_{0}^{s} \otimes E_{1}^{s}, \quad E_{10} = E_{1}^{s} \otimes E_{0}^{s}, \quad E_{11} = E_{1}^{s} \otimes E_{1}^{s}
 \end{equation}
 
 \begin{multline}\label{eq:op-el-1}
@@ -59,17 +59,6 @@ Thus, the Kraus operators $E_{i}$ the Amplitude Damping acting on two qubits are
     E_{11} = \gamma \ket{00}\bra{11}
     = \begin{pmatrix} 0 & 0 & 0 & \gamma \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
 \end{equation}
-
-% If we restrict the operator to the span {$\ket{01}$, $\ket{10}$}, we get the operators:
-% \begin{equation}
-%     E_{0}^{s} = \sqrt{1-\gamma} I
-% \end{equation}
-% \begin{equation}
-%     E_{1}^{s} = \sqrt{\gamma}|00\rangle\langle 01| = \sqrt{\gamma}\begin{pmatrix} 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
-% \end{equation}
-% \begin{equation}
-%     E_{2} = \sqrt{\gamma}|00\rangle\langle 10| = \sqrt{\gamma}\begin{pmatrix} 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \end{pmatrix}
-% \end{equation}
 
 We have that
 \begin{equation}
@@ -92,16 +81,17 @@ And so, the application of these operators to the state $\rho$ produces the stat
 
 Thus, with probability $\gamma$, the state is projected to $\ket{00}$, orthogonal to $\ket{\psi}$, while with probability $1-\gamma$, the state is unchanged. 
 
-% This means that the state $\ket{00}$ can be used to detect amplitude damping errors with measurement operators:
-% \begin{equation}
-%     M_{0} = \ket{00}\bra{00} \quad \text{projector on} \operatorname{span}\{\ket{00}\}
-% \end{equation}
-% \begin{equation}
-%     M_{1} = \ket{01}\bra{01} + \ket{10}\bra{10} + \ket{11}\bra{11} \quad \text{projector on} \operatorname{span}\{\ket{01}, \ket{10}, \ket{11}\}
-% \end{equation}
+Notice that the set of operation elements $\{E_{00}, E_{01}, E_{10}, E_{11}\}$, has the same effect of the operator set
+\begin{equation}
+    E_{0} = \sqrt{1-\gamma}(\ket{01}\bra{01} + \ket{10}\bra{10}) \quad E_{1} = \sqrt{\gamma}|00\rangle\langle 01| \quad E_{2} = \sqrt{\gamma}|00\rangle\langle 10|
+\end{equation}
+which, in the span ${\ket{01}, \ket{10}}$, satisfies the completeness relation $\sum_{i} E_{i}^{\dagger} E_{i} = I$.
+
+\paragraph*{Theorem}
+The application of amplitude damping applied on a dual rail qubit gives a process which can be described by the operation elements \hyperref[eq:op-el-1]{$E_{00}$}, \hyperref[eq:op-el-2]{$E_{01}$}, \hyperref[eq:op-el-3]{$E_{10}$}, \hyperref[eq:op-el-4]{$E_{11}$}, that is, either nothing happens to the qubit, or the qubit is transformed into the state $\ket{00}$. 
 
 \paragraph*{Proof}
-We can get the same result considering the effect of amplitude damping on the first qubit and second qubit separetely, respectively associated to the third and fourth qubit for the environment, which both start from the state 0.
+Consider the effect of amplitude damping on the first qubit and second qubit separetely, respectively associated to the third and fourth qubit for the environment, both starting from the state 0.
 
 Since the circuit of the amplitude damping on a single qubit is the following:
 \begin{align}
@@ -114,12 +104,13 @@ Since the circuit of the amplitude damping on a single qubit is the following:
 So the one for the amplitude damping on a dual-rail qubit is:
 \begin{align}
     \Qcircuit @C=1em @R=1.2em {
-        \lstick{\rho_0} & \qw & \ctrl{2} & \targ & \qw & \qw & \rstick{\rho_0'} \qw  \\
-        \lstick{\rho_1} & \qw & \qw & \qw & \ctrl{2} & \targ & \rstick{\rho_1'} \qw  \\
+        \lstick{\rho_A} & \qw & \ctrl{2} & \targ & \qw & \qw & \rstick{\rho_A'} \qw  \\
+        \lstick{\rho_B} & \qw & \qw & \qw & \ctrl{2} & \targ & \rstick{\rho_B'} \qw  \\
         \lstick{\ket{0}} & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \qw & \qw & \meter \qw \\
         \lstick{\ket{0}} & \qw & \qw & \qw & \gate{R_y(\theta)} & \ctrl{-2} & \meter \qw
       }          
 \end{align}
+where $\rho_A$ and $\rho_B$ represent the first and second qubit of the dual-rail qubit, respectively.
 
 Let $\omega_0$ be the starting state of the system, $\omega_1$ the state after the amplitude damping on the first qubit, and $\omega_2$ the state after the amplitude damping on the second qubit.
 
@@ -184,14 +175,14 @@ To do that, we pass to the density matrix representation $\ket{\phi}\bra{\phi}$,
 
 We can simplify calculations by taking the trace of the environment while multiplying the terms: we discard the terms that do not have matching qubits for the environment.
 
-In particular, we have 4 terms coming from the multiplications of the terms by themselves (where obviously the environment bits are matching), plus 2 more coming from the multiplication of the first and the third terms of $\ket{\phi}$:
+In particular, we have 4 terms coming from the multiplications of the terms by themselves (where obviously the environment qubits are matching), plus 2 more coming from the cross multiplication of the first and the third terms of $\ket{\phi}$:
 
 \begin{align}
     Tr_e(\ket{\phi}\bra{\phi}) &= |a|^2 \cos^2 \frac{\theta}{2}\ket{01}\bra{01} + |a|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + |b|^2 \cos^2 \frac{\theta}{2}\ket{10}\bra{10} \\
     & + |b|^2 \sin^2 \frac{\theta}{2}\ket{00}\bra{00} + a b^{*} \cos^2 \frac{\theta}{2} \ket{01}\bra{10} + a^{*} b \cos^2 \frac{\theta}{2} \ket{10}\bra{01} 
 \end{align}
 
-Which can be simplified to 
+Which can be simplified, using $|a|^2 + |b|^2 = 1$, to 
 \begin{align}
     Tr_e(\ket{\phi}\bra{\phi}) &= \sin^2 \frac{\theta}{2}\ket{00}\bra{00} \\ 
     & + |a|^2 \cos^2 \frac{\theta}{2}\ket{01}\bra{01} + a b^{*} \cos^2 \frac{\theta}{2} \ket{01}\bra{10} \\
@@ -228,11 +219,13 @@ Consider the definition of fidelity between a pure and a mixed state
     F(\ket{\psi}, \sigma) = \sqrt{\bra{\psi}\sigma\ket{\psi}}
 \end{equation}
 
-Let $E_m$ set of POVM, such that
+Let $\{E_m\}$ set of POVM, such that we have one and only one term where $E_m = \ket{\psi}\bra{\psi}$, let it be $m=0$, so that $\bra{\psi}E_m\ket{\psi} = 1$. 
+
+We have
 \begin{equation}
     p_m = Tr(\ket{\psi}\bra{\psi} E_m) \quad \quad q_m = Tr(\sigma E_m)
 \end{equation}
-where $p_m$ and $q_m$ are the probability distributions of respectively $\ket{\psi}$ and $\sigma$.
+probabilities of obtaining a measurement outcome labeled by $m$.
 
 We can rewrite $p_m$ as
 \begin{equation}
@@ -244,11 +237,12 @@ And write the fidelity as
     F(\ket{\psi}, \rho) = \sum_{m} \sqrt{p_m q_m} 
 \end{equation}
 
-We can prove this statement by noticing that $\bra{\psi}E_m\ket{\psi} = 1$ if and only if $E_m = \ket{\psi}\bra{\psi}$, while it is 0 in the other cases; thus:
+As, according to our definition of the POVM, $\bra{\psi}E_m\ket{\psi} = 1$ if and only if $E_m = \ket{\psi}\bra{\psi}$, while it is 0 in the other cases; thus:
 \begin{align}
-    \sum_{m} \sqrt{p_m q_m} = \sum_{m} \sqrt{\bra{\psi}E_m\ket{\psi} Tr(\sigma E_m)} = \\
-    = \sqrt{\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} Tr(\sigma \ket{\psi}\bra{\psi})} = \\
-    = \sqrt{\sum_{i} \bra{i} \sigma \ket{\psi}\bra{\psi} \ket{i}} = \sqrt{\bra{\psi} \sigma \ket{\psi}} = F(\ket{\psi}, \sigma)
+    \sum_{m} \sqrt{p_m q_m} &= \sum_{m} \sqrt{\bra{\psi}E_m\ket{\psi} Tr(\sigma E_m)} = \\
+    &= \sqrt{\bra{\psi}E_0\ket{\psi} Tr(\sigma E_0)} = \\
+    &= \sqrt{\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} Tr(\sigma \ket{\psi}\bra{\psi})} = \\
+    &= \sqrt{\bra{\psi} \sigma \ket{\psi}} = F(\ket{\psi}, \sigma)
 \end{align}
 
 Now, consider the trace distance between the probability distributions $p_m$ and $q_m$:
@@ -256,11 +250,16 @@ Now, consider the trace distance between the probability distributions $p_m$ and
     D(p_m, q_m) = \frac{1}{2} \sum_{m} |p_m - q_m|
 \end{equation}
 
-This measure is upper bounded by the trace distance between the pure state $\ket{\psi}$ and the mixed state $\rho$:
+From Nielsen and Chuang, Theorem 9.1:
+\begin{equation}
+    D(\ket{\psi}, \sigma) = \max_{\{E_m\}} D(p_m, q_m)
+\end{equation}
+where the maximization is over all POVMs $\{E_m\}$.
+
+So we have that the trace distance between $p_m$ and $q_m$ is bounded by the trace distance between the correspondent pure state $\ket{\psi}$ and the mixed state $\rho$:
 \begin{equation}
     D(p_m, q_m) \leq D(\ket{\psi}, \sigma)
 \end{equation}
-
 
 We can prove the following:
 \begin{equation}
@@ -274,26 +273,33 @@ In particular, we can start from the trace distance between $p_m$ and $q_m$ \hyp
 \end{align}
 where r is the number of elements in the POVM set.
 
-We have one term where $E_m = \ket{\psi}\bra{\psi}$ and $\bra{\psi}E_m\ket{\psi} = 1$.
-For the other terms, $p_m$ is nullified but $q_m$ is still present, so we can rewrite the trace distance as
+We have that:
+\begin{itemize}
+    \item For $m=0$, $p_m=\bra{\psi}E_0\ket{\psi} = 1$, and $q_m = Tr(\sigma E_0) = \bra{\psi} \sigma \ket{\psi}$,
+    \item For $m>0$, $p_m=\bra{\psi}E_m\ket{\psi} = 0$, and $q_m=Tr(\sigma E_m) > 0$.
+\end{itemize}
+
+Thus, we can split the sum in two parts, and rewrite the trace distance as
 \begin{align}
-    D(p_m, q_m) &= \frac{1}{2} \left(|\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - \bra{\psi} \sigma \ket{\psi} | + | \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
-    &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + | \sum_{m=1}^{r} E_m Tr(\sigma)|\right)
+    D(p_m, q_m) &= \frac{1}{2} \left(|\bra{\psi}E_0\ket{\psi} - Tr(\sigma E_0)| + | \sum_{m=1}^{r} - Tr(\sigma E_m)|\right) = \\
+    &= \frac{1}{2} \left(|\bra{\psi}\ket{\psi}\bra{\psi}\ket{\psi} - \bra{\psi} \sigma \ket{\psi} | + | - \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
+    &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + | - \sum_{m=1}^{r} Tr(\sigma E_m)|\right) = \\
+    &= \frac{1}{2} \left(1 - F(\ket{\psi}, \sigma)^2 + \sum_{m=1}^{r} Tr(\sigma E_m) \right)
 \end{align}
 
-Where 
+We have that 
 \begin{equation}
-    \sum_{m=0}^{r} Tr(\sigma E_m) = \bra{\psi} \sigma \ket{\psi} + \sum_{m=1}^{r} Tr(\sigma E_m) = 1
+    \sum_{m=0}^{r} Tr(\sigma E_m) = 1
 \end{equation}
 
 Thus
 \begin{equation}
-    \sum_{m=1}^{r} Tr(\sigma E_m) = 1 - \bra{\psi} \sigma \ket{\psi} = 1 - F(\ket{\psi}, \sigma)^2
+    \sum_{m=1}^{r} Tr(\sigma E_m) = 1 - Tr(\sigma E_0) = 1 - F(\ket{\psi}, \sigma)^2
 \end{equation}
 
 So
 \begin{align}
-    D(p_m, q_m) &= \frac{1}{2} \left(|1 - F(\ket{\psi}, \sigma)^2 | + |1 - F(\ket{\psi}, \sigma)^2 |\right) = \\
+    D(p_m, q_m) &= \frac{1}{2} \left(1 - F(\ket{\psi}, \sigma)^2 + 1 - F(\ket{\psi}, \sigma)^2 \right) = \\
     &= 1 - F(\ket{\psi}, \sigma)^2 
 \end{align}
 
